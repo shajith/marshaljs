@@ -45,6 +45,14 @@ MarshalParser.prototype = {
     }
 
     switch(lookingFor) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    case 'nil':
+      return null;
+    case 'Symbol':
+      return this.consumeString();
     case 'String':
       return this.consumeString();
     case 'Array':
@@ -60,12 +68,20 @@ MarshalParser.prototype = {
     switch(typeKey) {
     case 34:
       return 'String';
-    case 91:
+    case 91: //[
       return 'Array';
-    case 123:
+    case 123: //{
       return 'Hash';
-    case 105:
+    case 105: //i
       return 'Fixnum';
+    case 84: //T
+      return 'true';
+    case 70: //F
+      return 'false';
+    case 48: //0
+      return 'nil';
+    case 58: //:
+      return 'Symbol';
     }
   },
 
@@ -141,6 +157,7 @@ MarshalParser.prototype = {
   },
 
   end: function(state) {
+    this.state.error = state.error;
     this.callback(state);
   }
 
