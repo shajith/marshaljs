@@ -61,6 +61,8 @@ MarshalParser.prototype = {
       return this.consumeHash();
     case 'Fixnum':
       return this.consumeLong();
+    case 'UClass':
+      return this.consumeUClass();
     }
   },
 
@@ -82,6 +84,8 @@ MarshalParser.prototype = {
       return 'nil';
     case 58: //:
       return 'Symbol';
+    case 67: //c
+      return 'UClass';
     }
   },
 
@@ -90,6 +94,16 @@ MarshalParser.prototype = {
     this.position++;
     this.log("consuming byte: " + byte);
     return byte;
+  },
+
+  consumeUClass: function() {
+    var symbolKey = this.consumeByte();
+    var className = this.consumeString();
+    var obj = {};
+    var data = this.consumeObject();
+    obj.className = className;
+    obj.object = data;
+    return obj;
   },
 
   consumeBytes: function(num) {
