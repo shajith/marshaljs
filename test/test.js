@@ -6,5 +6,7 @@ var data, parser, result;
 
 data = fs.readFileSync('./dump1.bin');
 parser = new marshal.MarshalParser(data);
-result = parser.parse(function(status) { console.dir(status);});
-assert.equal("a,a", result.object.join(","));
+parser.parse(function(result) {
+  assert.equal("a,a", result.object.join(","));
+});
+

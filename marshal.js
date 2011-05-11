@@ -2,6 +2,7 @@ var MarshalParser = function(data){
   this.data = data;
   this.position = 0;
   this.talky = false;
+  this.state = {};
 };
 
 MarshalParser.prototype = {
@@ -24,7 +25,11 @@ MarshalParser.prototype = {
     this.parseResult.majorVersion = majorVersion;
     this.parseResult.minorVersion = minorVersion;
     this.parseResult.object = this.consumeObject();
-    return this.parseResult;
+    if(!this.state.error) {
+      callback(this.parseResult);
+    }
+
+    return true;
   },
 
   consumeObject: function() {
