@@ -7,9 +7,8 @@ var MarshalParser = function(data){
 
 MarshalParser.prototype = {
   log: function(str) {
-    if(this.talky) {
+    if(this.talky)
       console.log(str);
-    }
   },
 
   parse: function(callback) {
@@ -87,15 +86,6 @@ MarshalParser.prototype = {
     return bytes;
   },
 
-  convertToInteger: function(bytes) {
-    var buf = new Buffer(bytes);
-    var vars = Binary.parse(buf)
-      .word16lu('len')
-      .vars
-    ;
-    return vars.len;
-  },
-
   consumeLong: function() {
     var b = this.consumeByte();
     if(b === 0)
@@ -141,9 +131,20 @@ MarshalParser.prototype = {
     return hash;
   },
 
-  end: function(status) {
-    this.callback(status);
+  convertToInteger: function(bytes) {
+    var buf = new Buffer(bytes);
+    var vars = Binary.parse(buf)
+      .word16lu('len')
+      .vars
+    ;
+    return vars.len;
+  },
+
+  end: function(state) {
+    this.callback(state);
   }
+
+
 };
 
 exports.MarshalParser = MarshalParser;
