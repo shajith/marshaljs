@@ -18,8 +18,7 @@ MarshalParser.prototype = {
       console.dir(str);
   },
 
-  parse: function(callback) {
-    this.callback = callback;
+  parse: function() {
     this.parseResult = {};
 
     try {
